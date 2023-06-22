@@ -1,37 +1,18 @@
 FROM alpine:3.15
 
-# Update package repositories
-RUN apk update && apk upgrade
+RUN apk add --no-cache php7 php7-cli php7-json php7-phar php7-mbstring php7-openssl php7-curl mysql-client
+RUN wget -O /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+RUN chmod +x /usr/local/bin/wp
+RUN ln -s /usr/local/bin/wp /usr/bin/wp
 
-# Install necessary packages (PHP, MySQL, Nginx)
-RUN apk add wget mariadb-client php7 php7-fpm php7-opcache php7-common php7-session php7-iconv php7-json php7-gd php7-curl php7-xml php7-mysqli php7-imap php7-cgi fcgi php7-pdo php7-pdo_mysql php7-soap php7-xmlrpc php7-posix php7-mcrypt php7-gettext php7-ldap php7-ctype php7-dom php7-simplexml
-
-# Copy Nginx configuration
-# COPY nginx.conf /etc/nginx/nginx.conf
-
-# Configure PHP-FPM
-RUN sed -i 's/user = nobody/user = nginx/' /etc/php7/php-fpm.d/www.conf && \
-    sed -i 's/group = nobody/group = nginx/' /etc/php7/php-fpm.d/www.conf && \
-    sed -i 's/;listen.owner = nobody/listen.owner = nginx/' /etc/php7/php-fpm.d/www.conf && \
-    sed -i 's/;listen.group = nobody/listen.group = nginx/' /etc/php7/php-fpm.d/www.conf && \
-    sed -i 's/;listen.mode = 0660/listen.mode = 0666/' /etc/php7/php-fpm.d/www.conf
-
-
-# Set up a directory for WordPress files
-RUN mkdir -p /var/www/html
-# WORKDIR /var/www/html
-
-
-#Download the latest Wordpress source files & Unpack the archive and delete it afterwards
-RUN wget http://wordpress.org/latest.tar.gz && tar -xzvf latest.tar.gz && rm latest.tar.gz
-
-# Copy WordPress files
-RUN mv wordpress/* /var/www/html/
-
-# Set ownership and permissions
-# RUN chown nginx:nginx /var/www/html && chmod 777 /var/www/html
-
-# Start Nginx and PHP-FPM services
+WORKDIR /var/www/html
 EXPOSE 9000
 
-CMD ["php-fpm"]
+# Download and configure WordPress
+RUN wp core download  --allow-root
+# RUN wp config create --dbname=wordpress --dbuser=wordpress --dbpass=wordpress   --dbhost=mariadb --allow-root
+# RUN wp core install --url=http://localhost --title="My WordPress Site" --admin_user=admin --admin_password=password --admin_email=admin@example.com --allow-root
+#debug
+CMD [ "tail","-f"]
+#end debuf
+# CMD ["php", "-S", "0.0.0.0:9000", "-t", "/var/www/html"]
