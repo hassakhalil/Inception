@@ -14,7 +14,7 @@ services:
     networks:
       - mynetwork
     environment:
-      WORDPRESS_DB_HOST: database
+      WORDPRESS_DB_HOST: 0.0.0.0
       WORDPRESS_DB_NAME: wordpress
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
@@ -22,9 +22,9 @@ services:
   database:
     container_name: mariadb
     build: ./requirements/mariadb/
-    environment:
-      MYSQL_DATABASE: wordpress
-      MYSQL_ROOT_PASSWORD: password
+    # environment:
+    #   MYSQL_DATABASE: wordpress
+    #   MYSQL_ROOT_PASSWORD: password
     volumes:
       - db_data:/var/lib/mysql
     restart: no

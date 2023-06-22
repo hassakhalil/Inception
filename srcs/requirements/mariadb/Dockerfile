@@ -21,10 +21,17 @@ RUN mkdir -p /var/run/mysqld
 # Adjust ownership and permissions
 RUN chown -R mysql:mysql /var/run/mysqld && chmod 777 /var/run/mysqld
 
+#copy config file inside the container
+COPY ./conf/my.cnf /etc/my.cnf
+RUN chown -R mysql:mysql /etc/my.cnf && chmod 777 /etc/my.cnf
+#modify the mariadb server config to Allow server to accept connections on all interfaces.
+COPY ./conf/my.cnf.d /etc/my.cnf.d
 # Switch to the non-root user
 USER mysql
 
 EXPOSE 3306
 
+
+
 # Start MariaDB service
-CMD ["mysqld", "--socket=/var/run/mysqld/mysqld.sock", "--bind-address=0.0.0.0", "--datadir=/var/lib/mysql"]
+CMD ["mysqld"]
