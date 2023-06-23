@@ -9,11 +9,9 @@ RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
 #reate a directory inside your container to store the SQL script
 RUN mkdir /docker-entrypoint-initdb.d
 
-#Copy the SQL script file into the container:
-COPY ./tools/init.sql /docker-entrypoint-initdb.d/
+#Copy the bash script file into the container:
+COPY ./tools/init-db.sh /docker-entrypoint-initdb.d/init-db.sh
 
-#Configure the MySQL/MariaDB container to execute all SQL scripts in the /docker-entrypoint-initdb.d directory during startup. This can be done by setting the MYSQL_INITDB_DIR environment variable to /docker-entrypoint-initdb.d
-ENV MYSQL_INITDB_DIR=/docker-entrypoint-initdb.d
 
 # Create the directory for the socket file
 RUN mkdir -p /var/run/mysqld
