@@ -13,18 +13,20 @@ services:
       - 9000:9000
     networks:
       - mynetwork
-    # environment:
-      # WORDPRESS_DB_HOST: mariadb
-      # WORDPRESS_DB_NAME: wordpress
-      # WORDPRESS_DB_USER: wordpress
-      # WORDPRESS_DB_PASSWORD: wordpress
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: password
 
   database:
     container_name: mariadb
     build: ./requirements/mariadb/
-    # environment:
-    #   MYSQL_DATABASE: wordpress
-    #   MYSQL_ROOT_PASSWORD: password
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql_password
     volumes:
       - db_data:/var/lib/mysql
     restart: no
@@ -40,8 +42,6 @@ services:
       - wordpress
     ports:
       - 443:443
-    # volumes:
-    #   - wordpress_data:/var/www/html
     restart: no
     networks:
       - mynetwork
