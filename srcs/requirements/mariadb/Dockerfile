@@ -1,35 +1,19 @@
-FROM alpine:3.15
+FROM debian:buster
 
-# Install MariaDB and dependencies & install rc-service
-RUN apk update && apk add --no-cache mysql mysql-client openrc
+# Install MariaDB  
+RUN apt update && apt install mariadb-server -y
+ 
+RUN sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf
 
-#Initialize the MariaDB data directory
-RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
+COPY ./tools/mysql_setup.sh .
+RUN chmod +x mysql_setup.sh
+# RUN ./mysql_setup.sh
 
-#reate a directory inside your container to store the SQL script
-RUN mkdir /docker-entrypoint-initdb.d
-
-#Copy the bash script file into the container:
-COPY ./tools/init-db.sh /docker-entrypoint-initdb.d/init-db.sh
-
-
-# Create the directory for the socket file
-RUN mkdir -p /var/run/mysqld
-
-# Adjust ownership and permissions
-RUN chown -R mysql:mysql /var/run/mysqld && chmod 777 /var/run/mysqld
-
-#copy config file inside the container
-COPY ./conf/my.cnf /etc/my.cnf
-RUN chown -R mysql:mysql /etc/my.cnf && chmod 777 /etc/my.cnf
-#modify the mariadb server config to Allow server to accept connections on all interfaces.
-COPY ./conf/my.cnf.d /etc/my.cnf.d
 # Switch to the non-root user
-USER mysql
+# USER mysql
 
 EXPOSE 3306
 
+# CMD ["mysqld"]
 
-
-# Start MariaDB service
-CMD ["mysqld"]
+CMD ["tail", "-f"]

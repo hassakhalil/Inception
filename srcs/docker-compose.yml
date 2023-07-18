@@ -7,29 +7,27 @@ services:
     depends_on:
       - database
     volumes:
-      - wordpress_data:/var/www/html
-    restart: no
+      - ../volumes/wp_volume/:/var/www/html
     ports:
       - 9000:9000
     networks:
       - mynetwork
-    environment:
-      WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_NAME: wordpress
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: password
+    # environment:
+    #   WORDPRESS_DB_HOST: mariadb
+    #   WORDPRESS_DB_NAME: wordpress
+    #   WORDPRESS_DB_USER: wordpress
+    #   WORDPRESS_DB_PASSWORD: password
 
   database:
     container_name: mariadb
     build: ./requirements/mariadb/
-    environment:
-      MYSQL_DATABASE: wordpress
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_USER: mysql
-      MYSQL_PASSWORD: mysql_password
+    # environment:
+    #   MYSQL_DATABASE: wordpress
+    #   MYSQL_ROOT_PASSWORD: password
+    #   MYSQL_USER: mysql
+    #   MYSQL_PASSWORD: mysql_password
     volumes:
-      - db_data:/var/lib/mysql
-    restart: no
+      - db_volume:/var/lib/mysql
     ports:
       - 3306:3306
     networks:
@@ -38,11 +36,12 @@ services:
   nginx:
     container_name: nginx
     build: ./requirements/nginx/
+    volumes:
+      - ../volumes/wp_volume/:/var/www/html
     depends_on:
       - wordpress
     ports:
       - 443:443
-    restart: no
     networks:
       - mynetwork
 
@@ -50,5 +49,9 @@ networks:
   mynetwork:
 
 volumes:
-  wordpress_data:
-  db_data:
+  db_volume:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '../volumes/db_volume'

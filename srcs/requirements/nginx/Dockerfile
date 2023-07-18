@@ -1,7 +1,11 @@
-FROM alpine:3.15
+FROM debian:buster
 
-RUN apk update && apk upgrade && apk add nginx
+RUN apt update && apt install nginx openssl -y
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
-# COPY ./html /usr/share/nginx/html
-EXPOSE 443 
+
+# EXPOSE 443 
+RUN mkdir /etc/nginx/ssl/
+
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/ssl.key -out /etc/nginx/ssl/ssl.crt -subj "/C=US/ST=California/L=San Francisco/O=Example Company/OU=IT/CN=hkhalil.42.fr/emailAddress=admin@example.com"
+
 CMD ["nginx", "-g", "daemon off;"]
