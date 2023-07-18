@@ -11,5 +11,8 @@ COPY ./tools/mysql_setup.sh .
 RUN chmod +x mysql_setup.sh
 
 
-CMD ["./mysql_setup.sh"]
+# RUN /mysql_setup.sh
+# CMD ["mysqld"]
+CMD ["/mysql_setup.sh"]
+
 

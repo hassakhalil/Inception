@@ -4,31 +4,27 @@ services:
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress/
+    # args:
+    #   DB_PASS: ${DB_PASS}
+    #   DB_NAME: ${DB_NAME}
+    #   DB_USER: ${DB_USER}
     depends_on:
       - mariadb
     volumes:
       - wp:/var/www/html
     networks:
       - mynetwork
-    # environment:
-    #   WORDPRESS_DB_HOST: mariadb
-    #   WORDPRESS_DB_NAME: wordpress
-    #   WORDPRESS_DB_USER: wordpress
-    #   WORDPRESS_DB_PASSWORD: password
-
+    env_file:
+      - .env
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb/
-    # environment:
-    #   MYSQL_DATABASE: wordpress
-    #   MYSQL_ROOT_PASSWORD: password
-    #   MYSQL_USER: mysql
-    #   MYSQL_PASSWORD: mysql_password
+    env_file:
+      - .env
     volumes:
       - db:/var/lib/mysql
     networks:
       - mynetwork
-
   nginx:
     container_name: nginx
     build: ./requirements/nginx/
@@ -47,6 +43,7 @@ services:
       - mynetwork
     depends_on:
       - nginx
+      - mariadb
 networks:
   mynetwork:
 

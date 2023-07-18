@@ -3,17 +3,17 @@
 # Start MySQL service
 service mysql start
 
-sleep 2
-
 # MySQL commands
-mysql <<EOF
-CREATE DATABASE wordpress;
-CREATE USER 'myuser'@'%' IDENTIFIED BY 'mypassword';
-GRANT ALL PRIVILEGES ON wordpress.* TO 'myuser'@'%';
-FLUSH PRIVILEGES;
-EOF
+mysql -u root -e  "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
+mysql -u root -e  "CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASS';"
+mysql -u root -e  "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%';"
+mysql -u root -e  "FLUSH PRIVILEGES;"
 
 # Stop MySQL service
 service mysql stop
 
 mysqld
+
+#   "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
+#  mysql -u root -e "CREATE  USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASS';"
+#  mysql -u root  -e  "GRANT ALL PRIVILEGES ON  *.* TO '$DB_USER'@'%';"
