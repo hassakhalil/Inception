@@ -1,7 +1,10 @@
 FROM debian:buster
 
 RUN apt update && apt install nginx openssl -y
-COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+
+COPY ./conf/conf /etc/nginx/sites-enabled
+
+RUN mv /etc/nginx/sites-enabled/conf /etc/nginx/sites-enabled/default
 
 # EXPOSE 443 
 RUN mkdir /etc/nginx/ssl/

@@ -3,7 +3,7 @@
 # Start MySQL service
 service mysql start
 
-sleep 5
+sleep 2
 
 # MySQL commands
 mysql <<EOF
@@ -15,3 +15,5 @@ EOF
 
 # Stop MySQL service
 service mysql stop
+
+mysqld
