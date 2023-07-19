@@ -51,10 +51,10 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/Users/hassan/Desktop/Inception/srcs/home/hkhalil/db'
+      device: '/root/Inception/srcs/home/hkhalil/db'
   wp:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/Users/hassan/Desktop/Inception/srcs/home/hkhalil/wp'
+      device: '/root/Inception/srcs/home/hkhalil/wp'
