@@ -12,6 +12,7 @@ services:
       - mynetwork
     env_file:
       - var.env
+    restart: on-failure
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb/
@@ -21,6 +22,7 @@ services:
       - db:/var/lib/mysql
     networks:
       - mynetwork
+    restart: on-failure
   nginx:
     container_name: nginx
     build: ./requirements/nginx/
@@ -34,6 +36,7 @@ services:
       - 443:443
     networks:
       - mynetwork
+    restart: on-failure
   adminer:
     container_name: adminer
     build: ./requirements/adminer/
@@ -41,7 +44,7 @@ services:
       - mynetwork
     depends_on:
       - nginx
-      - mariadb
+    restart: on-failure
 networks:
   mynetwork:
 
@@ -51,10 +54,10 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/root/Inception/srcs/home/hkhalil/db'
+      device: '/home/hkhalil/data/db'
   wp:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/root/Inception/srcs/home/hkhalil/wp'
+      device: '/home/hkhalil/data/wp'

@@ -13,7 +13,7 @@ sleep 10
 
 wp core download --allow-root
 wp config create --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASS --dbhost=mariadb --allow-root
-wp core install --url=$URL --title="test_for_inception_project" --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASS --admin_email=$WP_ADMIN_EMAIL --allow-root
+wp core install --url=$URL --title="$TITLE" --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASS --admin_email=$WP_ADMIN_EMAIL --allow-root
 wp user create $WP_USER $WP_EMAIL --role=author --user_pass=$WP_PASS --allow-root
 
 php-fpm7.3 -F
