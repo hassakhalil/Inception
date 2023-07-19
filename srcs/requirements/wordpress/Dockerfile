@@ -1,12 +1,19 @@
 FROM debian:buster
 
-RUN apt update && apt install php php-fpm php-mysql curl mariadb-client -y 
-RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-RUN chmod +x wp-cli.phar &&  mv wp-cli.phar /usr/local/bin/wp
-
 EXPOSE 9000
 
 COPY ./tools/install_wp.sh .
 RUN chmod +x install_wp.sh
+
+ARG DB_NAME=$DB_NAME
+ARG DB_USER=$DB_USER
+ARG DB_PASS=$DB_PASS
+ARG URL=$URL
+ARG WP_ADMIN_USER=$WP_ADMIN_USER
+ARG WP_ADMIN_PASS=$WP_ADMIN_PASS
+ARG WP_ADMIN_EMAIL$WP_ADMIN_EMAIL
+ARG WP_USER=$WP_USER
+ARG WP_EMAIL=$WP_EMAIL
+ARG WP_PASS=$WP_PASS
 
 CMD [ "./install_wp.sh"]

@@ -1,7 +1,6 @@
 FROM debian:buster
 
-RUN apt update && apt install -y php php-mysql wget
+COPY ./tools/start_adminer.sh .
+RUN chmod +x start_adminer.sh
 
-RUN wget https://www.adminer.org/latest.php -O /home/adminer.php
-
-CMD ["php" ,"-S","0.0.0.0:8080","/home/adminer.php"]
+CMD ["/start_adminer.sh"]

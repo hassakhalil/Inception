@@ -4,10 +4,6 @@ services:
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress/
-    # args:
-    #   DB_PASS: ${DB_PASS}
-    #   DB_NAME: ${DB_NAME}
-    #   DB_USER: ${DB_USER}
     depends_on:
       - mariadb
     volumes:
@@ -15,12 +11,12 @@ services:
     networks:
       - mynetwork
     env_file:
-      - .env
+      - var.env
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb/
     env_file:
-      - .env
+      - var.env
     volumes:
       - db:/var/lib/mysql
     networks:
@@ -28,6 +24,8 @@ services:
   nginx:
     container_name: nginx
     build: ./requirements/nginx/
+    env_file:
+      - var.env
     volumes:
       - wp:/var/www/html
     depends_on:
@@ -53,10 +51,10 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/root/Inception/srcs/home/hkhalil/db'
+      device: '/Users/hassan/Desktop/Inception/srcs/home/hkhalil/db'
   wp:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/root/Inception/srcs/home/hkhalil/wp'
+      device: '/Users/hassan/Desktop/Inception/srcs/home/hkhalil/wp'
