@@ -4,6 +4,7 @@ services:
   wordpress:
     container_name: wordpress
     build: ./requirements/wordpress/
+    image: wordpress
     depends_on:
       - mariadb
     volumes:
@@ -16,6 +17,7 @@ services:
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb/
+    image: mariadb
     env_file:
       - var.env
     volumes:
@@ -26,6 +28,7 @@ services:
   nginx:
     container_name: nginx
     build: ./requirements/nginx/
+    image: nginx
     env_file:
       - var.env
     volumes:
@@ -40,6 +43,7 @@ services:
   adminer:
     container_name: adminer
     build: ./requirements/adminer/
+    image: adminer
     networks:
       - mynetwork
     depends_on:

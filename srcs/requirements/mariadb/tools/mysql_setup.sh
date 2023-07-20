@@ -13,7 +13,3 @@ mysql -u root -e  "FLUSH PRIVILEGES;"
 service mysql stop
 
 mysqld
-
-#   "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
-#  mysql -u root -e "CREATE  USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASS';"
-#  mysql -u root  -e  "GRANT ALL PRIVILEGES ON  *.* TO '$DB_USER'@'%';"
